@@ -44,9 +44,15 @@ class queryController extends Controller
         //this line show data which have id no (16-20)
         // $song = DB::table('songs')->where('id', '>', '15')->get();
         //this line show only title, year, artist_id where year less than 1985
+        // $song = DB::table('songs')
+        // ->select('artist_id','title', 'year')
+        // ->where('year', '<','1985')->get();
+
+        //Inner join songs table with artists and genres table.
         $song = DB::table('songs')
-        ->select('artist_id','title', 'year')
-        ->where('year', '<','1985')->get();
+            ->join('artists', 'songs.artist_id','=', 'artists.id')
+            ->join('genres', 'songs.genre_id', '=', 'genres.id')
+            ->get();
 
         return response()->json($song);
 
